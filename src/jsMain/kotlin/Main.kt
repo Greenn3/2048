@@ -1,8 +1,11 @@
 import androidx.compose.runtime.*
+import kotlinx.browser.document
 import org.jetbrains.compose.web.attributes.*
+import org.jetbrains.compose.web.attributes.EventsListenerBuilder.Companion.KEYDOWN
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
+import org.w3c.dom.events.KeyboardEvent
 import kotlin.random.Random
 
 
@@ -51,20 +54,18 @@ fun main() {
     RandomN()
     RandomN()
 
+    document.addEventListener(KEYDOWN,{
+        when((it as KeyboardEvent).key){
+            "ArrowLeft" -> MoveLeft()
+        }
+
+       // console.log((it as KeyboardEvent).key)
+    })
+
     renderComposable(rootElementId = "root") {
-        Div ({
-            style {
-                width(100.percent)
-                height(100.percent)
-            }
-            onKeyDown {
-                console.log(it.key)
-                when(it.key){
-                    "ArrowLeft" -> console.log("bu")
-                    //MoveLeft()
-                }
-            }
-        }){
+
+
+
             Table {
 
 
@@ -103,4 +104,3 @@ fun main() {
             }
         }
     }
-}
