@@ -9,7 +9,6 @@ import org.w3c.dom.events.KeyboardEvent
 import kotlin.random.Random
 
 
-
 fun main() {
     var count: Int by mutableStateOf(0)
 
@@ -37,12 +36,13 @@ fun main() {
             }
         }
     }
-    fun MoveLeft (){
+
+    fun MoveLeft() {
         list.forEach { row ->
-            for (index in 1..3){
-                if (row[index] != null){
-                    for(k in 0 until index){
-                        if(row[k] == null){
+            for (index in 1..3) {
+                if (row[index] != null) {
+                    for (k in 0 until index) {
+                        if (row[k] == null) {
                             row[k] = row[index]
                             row[index] = null
                         }
@@ -51,56 +51,94 @@ fun main() {
             }
         }
     }
-    RandomN()
-    RandomN()
 
-    document.addEventListener(KEYDOWN,{
-        when((it as KeyboardEvent).key){
-            "ArrowLeft" -> MoveLeft()
+    fun MoveRight() {
+        list.forEach { row ->
+            for (index in 2 downTo 0) {
+                if (row[index] != null) {
+                    for (k in 3 downTo index + 1) {
+                        if (row[k] == null) {
+                            row[k] = row[index]
+                            row[index] = null
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    fun MoveUp() {
+        for (column in 0..3) {
+            for (j in 1..3) {
+                val row = list[j]
+                if (row[column] != null) {
+                    for (k in 0 until j) {
+                        if (list[k][column] == null) {
+                            list[k][column] = row[column]
+                            row[column] = null
+                        }
+                    }
+                }
+            }
         }
 
-       // console.log((it as KeyboardEvent).key)
+    }
+
+    fun MoveDown() {
+        for (column in 0..3) {
+            for (j in 2 downTo 0) {
+                val row = list[j]
+                if (row[column] != null) {
+                    for (k in 3 downTo j+1) {
+                        if (list[k][column] == null) {
+                            list[k][column] = row[column]
+                            row[column] = null
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    RandomN()
+    RandomN()
+
+    document.addEventListener(KEYDOWN, {
+        when ((it as KeyboardEvent).key) {
+            "ArrowLeft" -> MoveLeft()
+            "ArrowRight" -> MoveRight()
+            "ArrowUp" -> MoveUp()
+            "ArrowDown" -> MoveDown()
+        }
+
+        // console.log((it as KeyboardEvent).key)
     })
 
     renderComposable(rootElementId = "root") {
 
 
+        Table {
 
-            Table {
 
-
-                for (i in 0..3) {
-                    Tr {
-                        for (j in 0..3) Td({
-                            style {
-                                border(1.px, LineStyle.Solid, Color.chocolate)
-                                width(25.px)
-                                height(25.px)
-                                textAlign("center")
-                                property("vertical-align", "center")
-                            }
-                        }) {
-                            Text(list[i][j]?.toString() ?: "")
+            for (i in 0..3) {
+                Tr {
+                    for (j in 0..3) Td({
+                        style {
+                            border(1.px, LineStyle.Solid, Color.chocolate)
+                            width(25.px)
+                            height(25.px)
+                            textAlign("center")
+                            property("vertical-align", "center")
                         }
+                    }) {
+                        Text(list[i][j]?.toString() ?: "")
                     }
                 }
             }
-            Div({ style { padding(25.px) } }) {
-                Button(attrs = {
-                    onClick { count -= 1 }
-                }) {
-                    Text("-")
-                }
-
-                Span({ style { padding(15.px) } }) {
-                    Text("$count")
-                }
-
-                Button(attrs = {
-                    onClick { count += 1 }
-                }) {
-                    Text("+")
-                }
-            }
         }
+
     }
+}
