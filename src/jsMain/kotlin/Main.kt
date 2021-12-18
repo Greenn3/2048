@@ -61,10 +61,15 @@ fun main() {
                             row[k] = row[index]
                             row[index] = null
                         }
+                        else if(row[k] == row[index]){
+                            row[k] = 2*row[k]!!
+                            row[index] = null
+                        }
                     }
                 }
             }
         }
+        RandomN()
     }
 
     fun MoveRight() {
@@ -76,11 +81,16 @@ fun main() {
                             row[k] = row[index]
                             row[index] = null
                         }
+                        else if(row[k] == row[index]){
+                            row[k] = 2*row[k]!!
+                            row[index] = null
+                        }
                     }
 
                 }
             }
         }
+        RandomN()
     }
 
     fun MoveUp() {
@@ -93,10 +103,15 @@ fun main() {
                             list[k][column] = row[column]
                             row[column] = null
                         }
+                        else if(list[k][column] == row[column]){
+                            list[k][column]  = 2*list[k][column]!!
+                            row[column] = null
+                        }
                     }
                 }
             }
         }
+        RandomN()
 
     }
 
@@ -110,12 +125,15 @@ fun main() {
                             list[k][column] = row[column]
                             row[column] = null
                         }
+                        else if(list[k][column] == row[column] ){
+                            list[k][column]  = 2*list[k][column]!!
+                            row[column] = null
+                        }
                     }
                 }
             }
         }
-
-
+        RandomN()
     }
 
     RandomN()
@@ -190,3 +208,4 @@ fun main() {
 
     }
 }
+
