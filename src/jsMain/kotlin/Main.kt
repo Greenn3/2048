@@ -110,6 +110,11 @@ fun main() {
                         } else if (row[k] == row[index]) {
                             row[k] = 2 * row[k]!!
                             row[index] = null
+                            if(row[k] == 2048){
+                                window.setTimeout({
+                                    window.alert("You win, congrats")
+                                }, 500)
+                            }
                             yesOrNo = true
                         }
                     }
@@ -140,6 +145,11 @@ fun main() {
                         } else if (row[k] == row[index]) {
                             row[k] = 2 * row[k]!!
                             row[index] = null
+                            if(row[k] == 2048){
+                                window.setTimeout({
+                                    window.alert("You win, congrats")
+                                }, 500)
+                            }
                             yesOrNo = true
                         }
                     }
@@ -171,6 +181,11 @@ fun main() {
                         } else if (list[k][column] == row[column]) {
                             list[k][column] = 2 * list[k][column]!!
                             row[column] = null
+                            if(row[k] == 2048){
+                                window.setTimeout({
+                                    window.alert("You win, congrats")
+                                }, 500)
+                            }
                             yesOrNo = true
                         }
                     }
@@ -200,6 +215,11 @@ fun main() {
                         } else if (list[k][column] == row[column]) {
                             list[k][column] = 2 * list[k][column]!!
                             row[column] = null
+                            if(row[k] == 2048){
+                                window.setTimeout({
+                                    window.alert("You win, congrats")
+                                }, 500)
+                            }
                             yesOrNo = true
                         }
                     }
@@ -287,10 +307,10 @@ fun main() {
                     for (j in 0..3) Td({
                         style {
                             border(5.px, LineStyle.Solid, Color.chocolate)
-                            width(100.px)
-                            height(100.px)
+                            width(200.px)
+                            height(200.px)
                             textAlign("center")
-                            fontSize(50.px)
+                            fontSize(100.px)
                             backgroundColor(ColorMatch(list[i][j]))
                             property("vertical-align", "center")
                         }
@@ -303,6 +323,7 @@ fun main() {
 
     }
 }
+
 
 
 
