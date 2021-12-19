@@ -34,11 +34,30 @@ fun main() {
         mutableStateListOf(null, null, null, null)
     )
 
-    fun RandomN() {
-        val empties = list.sumOf { row -> row.count { cell -> cell == null } }
-        if(empties == 0){
-            console.log("yOU lost, hahahahha")
+    fun EmptiesCount() = list.sumOf { row -> row.count { cell -> cell == null } }
+    fun IsGameOver(): Boolean {
+        if(EmptiesCount() == 0){
+            list.forEach { row ->
+                for(cell in 1..3){
+                    if(row[cell] == row[cell - 1]){
+                        return false
+                    }
+                }
+            }
+            for(column in 0..3){
+                for(row in 1..3){
+                    if(list[row][column] == list[row-1][column]){
+                        return false
+                    }
+                }
+            }
+            return true
         }
+        return false
+    }
+
+    fun RandomN() {
+        val empties = EmptiesCount()
         val randI = Random.nextInt(empties)
         var count = 0
         list.forEach { row ->
@@ -59,6 +78,9 @@ fun main() {
                 }
             }
         }
+        if(IsGameOver()){
+            console.log("Game over")
+        }
     }
 
     fun MoveLeft() {
@@ -66,7 +88,11 @@ fun main() {
         list.forEach { row ->
             for (index in 1..3) {
                 if (row[index] != null) {
-                    for (k in 0 until index) {
+                    var x = index-1
+                    while(x > 0 && row[x]==null){
+                        x--
+                    }
+                    for (k in x until index) {
                         if (row[k] == null) {
                             row[k] = row[index]
                             row[index] = null
@@ -94,7 +120,11 @@ fun main() {
         list.forEach { row ->
             for (index in 2 downTo 0) {
                 if (row[index] != null) {
-                    for (k in 3 downTo index + 1) {
+                    var x = index +1
+                    while(x < 3 && row[x]==null){
+                        x++
+                    }
+                    for (k in x downTo index + 1) {
                         if (row[k] == null) {
                             row[k] = row[index]
                             row[index] = null
@@ -122,7 +152,11 @@ fun main() {
             for (j in 1..3) {
                 val row = list[j]
                 if (row[column] != null) {
-                    for (k in 0 until j) {
+                    var x = j-1
+                    while(x>0 && list[x][column] == null){
+                        x--
+                    }
+                    for (k in x until j) {
                         if (list[k][column] == null) {
                             list[k][column] = row[column]
                             row[column] = null
@@ -148,7 +182,11 @@ fun main() {
             for (j in 2 downTo 0) {
                 val row = list[j]
                 if (row[column] != null) {
-                    for (k in 3 downTo j+1) {
+                    var x = j+1
+                    while(x<3 && list[x][column] == null){
+                        x++
+                    }
+                    for (k in x downTo j+1) {
                         if (list[k][column] == null) {
                             list[k][column] = row[column]
                             row[column] = null
@@ -167,6 +205,7 @@ fun main() {
             RandomN()
         }
     }
+
 
     RandomN()
     RandomN()
@@ -240,4 +279,6 @@ fun main() {
 
     }
 }
+
+
 
