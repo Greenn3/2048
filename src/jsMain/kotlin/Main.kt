@@ -36,6 +36,9 @@ fun main() {
 
     fun RandomN() {
         val empties = list.sumOf { row -> row.count { cell -> cell == null } }
+        if(empties == 0){
+            console.log("yOU lost, hahahahha")
+        }
         val randI = Random.nextInt(empties)
         var count = 0
         list.forEach { row ->
@@ -43,7 +46,13 @@ fun main() {
 
                 if (row[index] == null) {
                     if (count == randI) {
-                        row[index] = 2
+                       if( Random.nextInt(7) == 3){
+                           row[index] = 4
+                       }
+                        else{
+                           row[index] = 2
+                       }
+
                     }
                     count++
 
@@ -53,6 +62,7 @@ fun main() {
     }
 
     fun MoveLeft() {
+        var yesOrNo = false
         list.forEach { row ->
             for (index in 1..3) {
                 if (row[index] != null) {
@@ -60,19 +70,27 @@ fun main() {
                         if (row[k] == null) {
                             row[k] = row[index]
                             row[index] = null
+                            yesOrNo = true
                         }
                         else if(row[k] == row[index]){
                             row[k] = 2*row[k]!!
                             row[index] = null
+                            yesOrNo = true
                         }
                     }
                 }
             }
         }
-        RandomN()
+        if(yesOrNo == true){
+            RandomN()
+        }
+
+
+
     }
 
     fun MoveRight() {
+        var yesOrNo = false
         list.forEach { row ->
             for (index in 2 downTo 0) {
                 if (row[index] != null) {
@@ -80,20 +98,26 @@ fun main() {
                         if (row[k] == null) {
                             row[k] = row[index]
                             row[index] = null
+                            yesOrNo = true
                         }
                         else if(row[k] == row[index]){
                             row[k] = 2*row[k]!!
                             row[index] = null
+                            yesOrNo = true
                         }
                     }
 
                 }
             }
         }
-        RandomN()
+        if(yesOrNo == true){
+            RandomN()
+        }
+
     }
 
     fun MoveUp() {
+        var yesOrNo = false
         for (column in 0..3) {
             for (j in 1..3) {
                 val row = list[j]
@@ -102,20 +126,24 @@ fun main() {
                         if (list[k][column] == null) {
                             list[k][column] = row[column]
                             row[column] = null
+                            yesOrNo = true
                         }
                         else if(list[k][column] == row[column]){
                             list[k][column]  = 2*list[k][column]!!
                             row[column] = null
+                            yesOrNo = true
                         }
                     }
                 }
             }
         }
-        RandomN()
-
+        if(yesOrNo == true){
+            RandomN()
+        }
     }
 
     fun MoveDown() {
+        var yesOrNo = false
         for (column in 0..3) {
             for (j in 2 downTo 0) {
                 val row = list[j]
@@ -124,16 +152,20 @@ fun main() {
                         if (list[k][column] == null) {
                             list[k][column] = row[column]
                             row[column] = null
+                            yesOrNo = true
                         }
                         else if(list[k][column] == row[column] ){
                             list[k][column]  = 2*list[k][column]!!
                             row[column] = null
+                            yesOrNo = true
                         }
                     }
                 }
             }
         }
-        RandomN()
+        if(yesOrNo == true){
+            RandomN()
+        }
     }
 
     RandomN()
