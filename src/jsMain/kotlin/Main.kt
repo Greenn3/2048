@@ -1,5 +1,9 @@
 import androidx.compose.runtime.*
 import kotlinx.browser.document
+import kotlinx.browser.window
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import org.jetbrains.compose.web.attributes.*
 import org.jetbrains.compose.web.attributes.EventsListenerBuilder.Companion.KEYDOWN
 import org.jetbrains.compose.web.attributes.EventsListenerBuilder.Companion.TOUCHEND
@@ -13,11 +17,14 @@ import org.w3c.dom.get
 import kotlin.math.abs
 import kotlin.random.Random
 
-external interface Options{
+external interface Options {
     var passive: Boolean
 }
+
 var touchStartX: Int? = null
 var touchStartY: Int? = null
+
+val scope = MainScope()
 
 fun main() {
     val options = (js("{}") as Options).apply {
@@ -36,17 +43,17 @@ fun main() {
 
     fun EmptiesCount() = list.sumOf { row -> row.count { cell -> cell == null } }
     fun IsGameOver(): Boolean {
-        if(EmptiesCount() == 0){
+        if (EmptiesCount() == 0) {
             list.forEach { row ->
-                for(cell in 1..3){
-                    if(row[cell] == row[cell - 1]){
+                for (cell in 1..3) {
+                    if (row[cell] == row[cell - 1]) {
                         return false
                     }
                 }
             }
-            for(column in 0..3){
-                for(row in 1..3){
-                    if(list[row][column] == list[row-1][column]){
+            for (column in 0..3) {
+                for (row in 1..3) {
+                    if (list[row][column] == list[row - 1][column]) {
                         return false
                     }
                 }
@@ -65,12 +72,11 @@ fun main() {
 
                 if (row[index] == null) {
                     if (count == randI) {
-                       if( Random.nextInt(7) == 3){
-                           row[index] = 4
-                       }
-                        else{
-                           row[index] = 2
-                       }
+                        if (Random.nextInt(7) == 3) {
+                            row[index] = 4
+                        } else {
+                            row[index] = 2
+                        }
 
                     }
                     count++
@@ -78,7 +84,11 @@ fun main() {
                 }
             }
         }
-        if(IsGameOver()){
+        if (IsGameOver()) {
+
+            window.setTimeout({
+                window.alert("Game over, hahahaha")
+            }, 500)
             console.log("Game over")
         }
     }
@@ -88,8 +98,8 @@ fun main() {
         list.forEach { row ->
             for (index in 1..3) {
                 if (row[index] != null) {
-                    var x = index-1
-                    while(x > 0 && row[x]==null){
+                    var x = index - 1
+                    while (x > 0 && row[x] == null) {
                         x--
                     }
                     for (k in x until index) {
@@ -97,9 +107,8 @@ fun main() {
                             row[k] = row[index]
                             row[index] = null
                             yesOrNo = true
-                        }
-                        else if(row[k] == row[index]){
-                            row[k] = 2*row[k]!!
+                        } else if (row[k] == row[index]) {
+                            row[k] = 2 * row[k]!!
                             row[index] = null
                             yesOrNo = true
                         }
@@ -107,10 +116,9 @@ fun main() {
                 }
             }
         }
-        if(yesOrNo == true){
+        if (yesOrNo == true) {
             RandomN()
         }
-
 
 
     }
@@ -120,8 +128,8 @@ fun main() {
         list.forEach { row ->
             for (index in 2 downTo 0) {
                 if (row[index] != null) {
-                    var x = index +1
-                    while(x < 3 && row[x]==null){
+                    var x = index + 1
+                    while (x < 3 && row[x] == null) {
                         x++
                     }
                     for (k in x downTo index + 1) {
@@ -129,9 +137,8 @@ fun main() {
                             row[k] = row[index]
                             row[index] = null
                             yesOrNo = true
-                        }
-                        else if(row[k] == row[index]){
-                            row[k] = 2*row[k]!!
+                        } else if (row[k] == row[index]) {
+                            row[k] = 2 * row[k]!!
                             row[index] = null
                             yesOrNo = true
                         }
@@ -140,7 +147,7 @@ fun main() {
                 }
             }
         }
-        if(yesOrNo == true){
+        if (yesOrNo == true) {
             RandomN()
         }
 
@@ -152,8 +159,8 @@ fun main() {
             for (j in 1..3) {
                 val row = list[j]
                 if (row[column] != null) {
-                    var x = j-1
-                    while(x>0 && list[x][column] == null){
+                    var x = j - 1
+                    while (x > 0 && list[x][column] == null) {
                         x--
                     }
                     for (k in x until j) {
@@ -161,9 +168,8 @@ fun main() {
                             list[k][column] = row[column]
                             row[column] = null
                             yesOrNo = true
-                        }
-                        else if(list[k][column] == row[column]){
-                            list[k][column]  = 2*list[k][column]!!
+                        } else if (list[k][column] == row[column]) {
+                            list[k][column] = 2 * list[k][column]!!
                             row[column] = null
                             yesOrNo = true
                         }
@@ -171,7 +177,7 @@ fun main() {
                 }
             }
         }
-        if(yesOrNo == true){
+        if (yesOrNo == true) {
             RandomN()
         }
     }
@@ -182,18 +188,17 @@ fun main() {
             for (j in 2 downTo 0) {
                 val row = list[j]
                 if (row[column] != null) {
-                    var x = j+1
-                    while(x<3 && list[x][column] == null){
+                    var x = j + 1
+                    while (x < 3 && list[x][column] == null) {
                         x++
                     }
-                    for (k in x downTo j+1) {
+                    for (k in x downTo j + 1) {
                         if (list[k][column] == null) {
                             list[k][column] = row[column]
                             row[column] = null
                             yesOrNo = true
-                        }
-                        else if(list[k][column] == row[column] ){
-                            list[k][column]  = 2*list[k][column]!!
+                        } else if (list[k][column] == row[column]) {
+                            list[k][column] = 2 * list[k][column]!!
                             row[column] = null
                             yesOrNo = true
                         }
@@ -201,7 +206,7 @@ fun main() {
                 }
             }
         }
-        if(yesOrNo == true){
+        if (yesOrNo == true) {
             RandomN()
         }
     }
@@ -230,28 +235,45 @@ fun main() {
 
         val event = it as TouchEvent
         event.preventDefault()
-       val touchEndX = event.changedTouches[0]?.pageX
-       val touchEndY = event.changedTouches[0]?.pageY
+        val touchEndX = event.changedTouches[0]?.pageX
+        val touchEndY = event.changedTouches[0]?.pageY
 
         val difX = touchEndX!! - touchStartX!!
         val difY = touchEndY!! - touchStartY!!
-        if(abs(difX)<abs(difY)){
-            if(difY>0){
+        if (abs(difX) < abs(difY)) {
+            if (difY > 0) {
                 MoveDown()
             }
-            if(difY<0){
+            if (difY < 0) {
                 MoveUp()
             }
         }
-        if(abs(difX)>abs(difY)){
-            if(difX>0){
+        if (abs(difX) > abs(difY)) {
+            if (difX > 0) {
                 MoveRight()
             }
-            if(difX<0){
+            if (difX < 0) {
                 MoveLeft()
             }
         }
     }, options)
+
+    fun ColorMatch(value: Int?) =
+        when (value) {
+            null -> Color.lightyellow
+            2 -> Color.yellow
+            4 -> Color.orange
+            8 -> Color.darkorange
+            16 -> Color.red
+            32 -> Color.crimson
+            64 -> Color.brown
+            128 -> Color.mediumpurple
+            256 -> Color.indigo
+            512 -> Color.darkblue
+            1024 -> Color.blue
+            2048 -> Color.lightblue
+            else -> Color.gray
+        }
 
 
     renderComposable(rootElementId = "root") {
@@ -264,10 +286,12 @@ fun main() {
                 Tr {
                     for (j in 0..3) Td({
                         style {
-                            border(1.px, LineStyle.Solid, Color.chocolate)
-                            width(25.px)
-                            height(25.px)
+                            border(5.px, LineStyle.Solid, Color.chocolate)
+                            width(100.px)
+                            height(100.px)
                             textAlign("center")
+                            fontSize(50.px)
+                            backgroundColor(ColorMatch(list[i][j]))
                             property("vertical-align", "center")
                         }
                     }) {
@@ -279,6 +303,8 @@ fun main() {
 
     }
 }
+
+
 
 
 
