@@ -33,6 +33,8 @@ fun main() {
 
     var count: Int by mutableStateOf(0)
 
+    var scoreCount: Int by mutableStateOf(0)
+
 
     val list: MutableList<MutableList<Int?>> = mutableStateListOf(
         mutableStateListOf(null, null, null, null),
@@ -110,6 +112,7 @@ fun main() {
                         } else if (row[k] == row[index]) {
                             row[k] = 2 * row[k]!!
                             row[index] = null
+                            scoreCount = scoreCount + row[k]!!
                             if(row[k] == 2048){
                                 window.setTimeout({
                                     window.alert("You win, congrats")
@@ -145,6 +148,7 @@ fun main() {
                         } else if (row[k] == row[index]) {
                             row[k] = 2 * row[k]!!
                             row[index] = null
+                            scoreCount = scoreCount + row[k]!!
                             if(row[k] == 2048){
                                 window.setTimeout({
                                     window.alert("You win, congrats")
@@ -181,6 +185,7 @@ fun main() {
                         } else if (list[k][column] == row[column]) {
                             list[k][column] = 2 * list[k][column]!!
                             row[column] = null
+                            scoreCount = scoreCount + list[k][column]!!
                             if(row[k] == 2048){
                                 window.setTimeout({
                                     window.alert("You win, congrats")
@@ -215,6 +220,7 @@ fun main() {
                         } else if (list[k][column] == row[column]) {
                             list[k][column] = 2 * list[k][column]!!
                             row[column] = null
+                            scoreCount = scoreCount + list[k][column]!!
                             if(row[k] == 2048){
                                 window.setTimeout({
                                     window.alert("You win, congrats")
@@ -278,6 +284,10 @@ fun main() {
         }
     }, options)
 
+
+
+
+
     fun ColorMatch(value: Int?) =
         when (value) {
             null -> Color.lightyellow
@@ -297,6 +307,27 @@ fun main() {
 
 
     renderComposable(rootElementId = "root") {
+
+      /*  Div({style{
+            padding(25.px)
+
+        }
+        }){
+
+       */
+
+            TextArea("Score: " + scoreCount){
+                style {
+                    border(25.px)
+                    width(200.px)
+                    height(50.px)
+                    fontSize(30.px)
+                    textDecorationColor(Color.orange)
+
+                }
+            }
+        //}
+
 
 
         Table {
