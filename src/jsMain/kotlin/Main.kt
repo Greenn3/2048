@@ -1,5 +1,6 @@
 import androidx.compose.runtime.*
 import kotlinx.browser.document
+import kotlinx.browser.localStorage
 import kotlinx.browser.window
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import org.jetbrains.compose.web.renderComposable
 import org.w3c.dom.TouchEvent
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.get
+import org.w3c.dom.set
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -25,7 +27,7 @@ var touchStartX: Int? = null
 var touchStartY: Int? = null
 
 val scope = MainScope()
-
+const val score = "score"
 fun main() {
     val options = (js("{}") as Options).apply {
         passive = false
@@ -34,6 +36,9 @@ fun main() {
     var count: Int by mutableStateOf(0)
 
     var scoreCount: Int by mutableStateOf(0)
+
+
+    var highScore: Int by mutableStateOf(localStorage[score]?.toInt() ?: 0)
 
 
     val list: MutableList<MutableList<Int?>> = mutableStateListOf(
@@ -89,7 +94,11 @@ fun main() {
         if (IsGameOver()) {
 
             window.setTimeout({
-                window.alert("Game over, hahahaha")
+                localStorage[score] = scoreCount.toString()
+                if(scoreCount>highScore){
+                    highScore = scoreCount
+                }
+                window.alert("Game over, hahahaha \n Your score: $scoreCount \n High Score: $highScore")
             }, 500)
             console.log("Game over")
         }
@@ -285,11 +294,13 @@ fun main() {
     }, options)
 
     fun Reset() {
+
         for (i in 0..3) {
             for (j in 0..3) {
                 list[i][j] = null
             }
         }
+
         scoreCount = 0
         RandomN()
         RandomN()
@@ -352,16 +363,20 @@ fun main() {
         }) {
             Text("Score: $scoreCount")
         }
+        Span({
+            style {
+                border(25.px)
+                width(400.px)
+                height(50.px)
+                fontSize(30.px)
+                textDecorationColor(Color.orange)
+                backgroundSize("length")
+                margin(10.px)
 
-
-
-
-
-
-
-
-
-
+            }
+        }) {
+            Text("High Score: $highScore")
+        }
 
         Table {
 
