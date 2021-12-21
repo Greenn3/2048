@@ -37,10 +37,10 @@ fun main() {
 
 
     val list: MutableList<MutableList<Int?>> = mutableStateListOf(
-        mutableStateListOf(null, 2, 4, 8),
-        mutableStateListOf(16, 32, 64, 128),
-        mutableStateListOf(256, 512, 1024, 2048),
-        mutableStateListOf(4096, null, null, null)
+        mutableStateListOf(null, null, null, null),
+        mutableStateListOf(null, null, null, null),
+        mutableStateListOf(null, null, null, null),
+        mutableStateListOf(null, null, null, null)
     )
 
     fun EmptiesCount() = list.sumOf { row -> row.count { cell -> cell == null } }
@@ -319,21 +319,18 @@ fun main() {
 
         Button(attrs = {
             onClick { Reset() }
-            //  Label { "Reset" }
+            onTouchStart { Reset() }
+
             style {
                 border(25.px)
                 width(200.px)
                 height(50.px)
                 fontSize(30.px)
-//                position(20,20)
                 textDecorationColor(Color.orange)
                 backgroundColor(Color.lightsalmon)
                 margin(10.px)
 
-
             }
-
-
         }
         ) {
             Text("Reset")
