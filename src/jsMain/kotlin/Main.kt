@@ -294,6 +294,10 @@ fun main() {
     }, options)
 
     fun Reset() {
+        localStorage[score] = scoreCount.toString()
+        if(scoreCount>highScore){
+            highScore = scoreCount
+        }
 
         for (i in 0..3) {
             for (j in 0..3) {
