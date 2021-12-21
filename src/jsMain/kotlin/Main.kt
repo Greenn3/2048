@@ -37,10 +37,10 @@ fun main() {
 
 
     val list: MutableList<MutableList<Int?>> = mutableStateListOf(
-        mutableStateListOf(null, null, null, null),
-        mutableStateListOf(null, null, null, null),
-        mutableStateListOf(null, null, null, null),
-        mutableStateListOf(null, null, null, null)
+        mutableStateListOf(null, 2, 4, 8),
+        mutableStateListOf(16, 32, 64, 128),
+        mutableStateListOf(256, 512, 1024, 2048),
+        mutableStateListOf(4096, null, null, null)
     )
 
     fun EmptiesCount() = list.sumOf { row -> row.count { cell -> cell == null } }
@@ -113,7 +113,7 @@ fun main() {
                             row[k] = 2 * row[k]!!
                             row[index] = null
                             scoreCount = scoreCount + row[k]!!
-                            if(row[k] == 2048){
+                            if (row[k] == 2048) {
                                 window.setTimeout({
                                     window.alert("You win, congrats")
                                 }, 500)
@@ -149,7 +149,7 @@ fun main() {
                             row[k] = 2 * row[k]!!
                             row[index] = null
                             scoreCount = scoreCount + row[k]!!
-                            if(row[k] == 2048){
+                            if (row[k] == 2048) {
                                 window.setTimeout({
                                     window.alert("You win, congrats")
                                 }, 500)
@@ -186,7 +186,7 @@ fun main() {
                             list[k][column] = 2 * list[k][column]!!
                             row[column] = null
                             scoreCount = scoreCount + list[k][column]!!
-                            if(row[k] == 2048){
+                            if (row[k] == 2048) {
                                 window.setTimeout({
                                     window.alert("You win, congrats")
                                 }, 500)
@@ -221,7 +221,7 @@ fun main() {
                             list[k][column] = 2 * list[k][column]!!
                             row[column] = null
                             scoreCount = scoreCount + list[k][column]!!
-                            if(row[k] == 2048){
+                            if (row[k] == 2048) {
                                 window.setTimeout({
                                     window.alert("You win, congrats")
                                 }, 500)
@@ -284,49 +284,85 @@ fun main() {
         }
     }, options)
 
-
-
+    fun Reset() {
+        for (i in 0..3) {
+            for (j in 0..3) {
+                list[i][j] = null
+            }
+        }
+        scoreCount = 0
+        RandomN()
+        RandomN()
+    }
 
 
     fun ColorMatch(value: Int?) =
         when (value) {
-            null -> Color.lightyellow
-            2 -> Color.yellow
-            4 -> Color.orange
-            8 -> Color.darkorange
-            16 -> Color.red
-            32 -> Color.crimson
-            64 -> Color.brown
-            128 -> Color.mediumpurple
-            256 -> Color.indigo
-            512 -> Color.darkblue
-            1024 -> Color.blue
-            2048 -> Color.lightblue
-            else -> Color.gray
+
+            null -> rgb(106,106,106)
+            2 -> rgb(248,252,245)
+            4 -> rgb(230,244,220)
+            8 -> rgb(207,235,188)
+            16 -> rgb(185,226,157)
+            32 -> rgb(162,217,125)
+            64 -> rgb(140,207,94)
+            128 -> rgb(117,198,62)
+            256 -> rgb(98,170,49)
+            512 -> rgb(80,138,40)
+            1024 -> rgb(62,107,31)
+            2048 -> rgb(43,75,22)
+            else -> rgb(32,56,16)
         }
 
 
     renderComposable(rootElementId = "root") {
 
-      /*  Div({style{
-            padding(25.px)
+        Button(attrs = {
+            onClick { Reset() }
+            //  Label { "Reset" }
+            style {
+                border(25.px)
+                width(200.px)
+                height(50.px)
+                fontSize(30.px)
+//                position(20,20)
+                textDecorationColor(Color.orange)
+                backgroundColor(Color.lightsalmon)
+                margin(10.px)
+
+
+            }
+
 
         }
-        }){
+        ) {
+            Text("Reset")
 
-       */
+        }
 
-            TextArea("Score: " + scoreCount){
-                style {
-                    border(25.px)
-                    width(200.px)
-                    height(50.px)
-                    fontSize(30.px)
-                    textDecorationColor(Color.orange)
 
-                }
+        Span({
+            style {
+                border(25.px)
+                width(400.px)
+                height(50.px)
+                fontSize(30.px)
+                textDecorationColor(Color.orange)
+                backgroundSize("length")
+                margin(10.px)
+
             }
-        //}
+        }) {
+            Text("Score: $scoreCount")
+        }
+
+
+
+
+
+
+
+
 
 
 
