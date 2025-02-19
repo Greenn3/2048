@@ -2,7 +2,8 @@
 
 ## 🕹️ Play Now 👉 [greenn3.github.io/2048](https://greenn3.github.io/2048/)
 
-![2048 Game Screenshot](https://via.placeholder.com/800x400?text=2048+Game+Preview)
+![image](https://github.com/user-attachments/assets/2f1308bd-1f70-4297-a8e9-06a850a6084a)
+
 
 ## 📜 About  
 This is a web-based version of the **2048 puzzle game**, built using **Kotlin Compose for Web**.  
