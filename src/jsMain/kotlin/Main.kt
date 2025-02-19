@@ -1,9 +1,9 @@
 import kotlinx.browser.document
 import kotlinx.browser.localStorage
 import kotlinx.coroutines.MainScope
-import org.jetbrains.compose.web.attributes.EventsListenerBuilder.Companion.KEYDOWN
-import org.jetbrains.compose.web.attributes.EventsListenerBuilder.Companion.TOUCHEND
-import org.jetbrains.compose.web.attributes.EventsListenerBuilder.Companion.TOUCHSTART
+import kotlinx.browser.document
+import org.w3c.dom.events.EventListener
+
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
@@ -45,48 +45,47 @@ fun main() {
     logic.RandomN()
     logic.RandomN()
 
-    document.addEventListener(KEYDOWN, {
-        when ((it as KeyboardEvent).key) {
+    document.addEventListener("keydown", EventListener { event ->
+        val keyboardEvent = event as KeyboardEvent
+        when (keyboardEvent.key) {
             "ArrowLeft" -> logic.MoveLeft()
             "ArrowRight" -> logic.MoveRight()
             "ArrowUp" -> logic.MoveUp()
             "ArrowDown" -> logic.MoveDown()
         }
-
-        // console.log((it as KeyboardEvent).key)
     })
-    document.addEventListener(TOUCHSTART, {
-        val event = it as TouchEvent
-        event.preventDefault()
-        touchStartX = event.touches[0]?.pageX
-        touchStartY = event.touches[0]?.pageY
-    }, options)
-    document.addEventListener(TOUCHEND, {
+    document.addEventListener("touchstart", EventListener { event ->
+        val touchEvent = event as TouchEvent
+        touchEvent.preventDefault()
+        touchStartX = touchEvent.touches[0]?.pageX
+        touchStartY = touchEvent.touches[0]?.pageY
+    })
 
-        val event = it as TouchEvent
-        event.preventDefault()
-        val touchEndX = event.changedTouches[0]?.pageX
-        val touchEndY = event.changedTouches[0]?.pageY
+    document.addEventListener("touchend", EventListener { event ->
+        val touchEvent = event as TouchEvent
+        touchEvent.preventDefault()
+
+        val touchEndX = touchEvent.changedTouches[0]?.pageX
+        val touchEndY = touchEvent.changedTouches[0]?.pageY
 
         val difX = touchEndX!! - touchStartX!!
         val difY = touchEndY!! - touchStartY!!
+
         if (abs(difX) < abs(difY)) {
             if (difY > 0) {
                 logic.MoveDown()
-            }
-            if (difY < 0) {
+            } else {
                 logic.MoveUp()
             }
-        }
-        if (abs(difX) > abs(difY)) {
+        } else {
             if (difX > 0) {
                 logic.MoveRight()
-            }
-            if (difX < 0) {
+            } else {
                 logic.MoveLeft()
             }
         }
-    }, options)
+    })
+
 
     renderComposable(rootElementId = "root") {
 
